@@ -305,6 +305,14 @@ function injectCSS(platform, css) {
 		platform._style = style;
 		css = '/* Chart.js */\n' + css;
 		style.setAttribute('type', 'text/css');
+
+		/* This makes it possible to set nonce to inline style elements.
+		 * This is to use this library without the need to set the CSP header "style-src" to "unsafe-inline". */
+		var nonce = window.__cspNonce;
+		if (nonce) {
+			style.setAttribute('nonce', nonce);
+		}
+
 		document.getElementsByTagName('head')[0].appendChild(style);
 	}
 
