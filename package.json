@@ -2,7 +2,7 @@
   "name": "@fullstax/chart.js",
   "homepage": "http://www.chartjs.org",
   "description": "Simple HTML5 charts using the canvas element.",
-  "version": "2.7.3-rc.1",
+  "version": "2.7.3-rc.2",
   "license": "MIT",
   "main": "src/chart.js",
   "repository": {
@@ -55,6 +55,10 @@
   },
   "dependencies": {
     "chartjs-color": "^2.1.0",
+    "gitbook-plugin-anchorjs": "^2.1.0",
+    "gitbook-plugin-chartjs": "^0.1.0",
+    "gitbook-plugin-ga": "^1.0.1",
+    "gitbook-plugin-search-plus": "^1.0.3",
     "moment": "^2.10.2"
   }
 }

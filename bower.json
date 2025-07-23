@@ -1,9 +1,9 @@
 {
-  "name": "chart.js",
+  "name": "@fullstax/chart.js",
   "description": "Simple HTML5 charts using the canvas element.",
   "homepage": "http://www.chartjs.org",
   "license": "MIT",
-  "version": "2.7.3",
+  "version": "2.7.3-rc.2",
   "main": "./dist/Chart.js",
   "ignore": [
     ".github",
