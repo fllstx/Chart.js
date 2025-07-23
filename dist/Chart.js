@@ -1,7 +1,7 @@
 /*!
  * Chart.js
  * http://chartjs.org/
- * Version: 2.7.3-rc.2
+ * Version: 2.7.3-rc.3
  *
  * Copyright 2025 Chart.js Contributors
  * Released under the MIT license
@@ -11004,7 +11004,17 @@ function createResizer(handler) {
 	var resizer = document.createElement('div');
 	var cls = CSS_PREFIX + 'size-monitor';
 	var maxSize = 1000000;
-	var style =
+	var nonce = window.__cspNonce ? window.__cspNonce : '';
+
+	// Create style element for all styles
+	var styleElement = document.createElement('style');
+	if (nonce) {
+		styleElement.setAttribute('nonce', nonce);
+	}
+
+	// Add styles to the style element
+	var styleContent =
+		'.' + cls + '-expand, .' + cls + '-shrink {' +
 		'position:absolute;' +
 		'left:0;' +
 		'top:0;' +
@@ -11013,32 +11023,44 @@ function createResizer(handler) {
 		'overflow:hidden;' +
 		'pointer-events:none;' +
 		'visibility:hidden;' +
-		'z-index:-1;';
+		'z-index:-1;' +
+		'}' +
+		'.' + cls + '-expand > div {' +
+			'position:absolute;' +
+			'width:' + maxSize + 'px;' +
+			'height:' + maxSize + 'px;' +
+			'left:0;' +
+			'top:0;' +
+		'}' +
+		'.' + cls + '-shrink > div {' +
+			'position:absolute;' +
+			'width:200%;' +
+			'height:200%;' +
+			'left:0;' +
+			'top:0;' +
+		'}';
 
-	resizer.style.cssText = style;
+	styleElement.appendChild(document.createTextNode(styleContent));
+	document.head.appendChild(styleElement);
+
+	// Create DOM structure
 	resizer.className = cls;
-	resizer.innerHTML =
-		'<div class="' + cls + '-expand" style="' + style + '">' +
-			'<div style="' +
-				'position:absolute;' +
-				'width:' + maxSize + 'px;' +
-				'height:' + maxSize + 'px;' +
-				'left:0;' +
-				'top:0">' +
-			'</div>' +
-		'</div>' +
-		'<div class="' + cls + '-shrink" style="' + style + '">' +
-			'<div style="' +
-				'position:absolute;' +
-				'width:200%;' +
-				'height:200%;' +
-				'left:0; ' +
-				'top:0">' +
-			'</div>' +
-		'</div>';
 
-	var expand = resizer.childNodes[0];
-	var shrink = resizer.childNodes[1];
+	// Create the expand element
+	var expand = document.createElement('div');
+	expand.className = cls + '-expand';
+	var expandChild = document.createElement('div');
+	expand.appendChild(expandChild);
+
+	// Create the shrink element
+	var shrink = document.createElement('div');
+	shrink.className = cls + '-shrink';
+	var shrinkChild = document.createElement('div');
+	shrink.appendChild(shrinkChild);
+
+	// Append children to resizer
+	resizer.appendChild(expand);
+	resizer.appendChild(shrink);
 
 	resizer._reset = function() {
 		expand.scrollLeft = maxSize;
